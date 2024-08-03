@@ -1,0 +1,36 @@
+{% extends "zomatoapp/base.html" %}
+
+{% block title %}Restaurants{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="text-white" style="font-size: 50px;">Restaurants in Namma Bengaluru</h1>
+        <form method="GET" action="{% url 'search_restaurant' %}">
+            <div class="form-group">
+                <input type="text" name="query" class="form-control" placeholder="Search for a restaurant...">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    {% if restaurants %}
+        {% for name, google_maps_link, address, delivery_url in restaurants %}
+            <div class="col-md-3" style="margin-top: 50px;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="text-white">{{ name }}</h4>
+                        <p class="text-white">Google Maps: <a href="{{ google_maps_link }}" class="text-white" target="_blank">GOOGLE MAPS LINK</a></p>
+                        {% if delivery_url == "restaurant doesn't deliver" %}
+                            <p class="text-white">Restaurant doesn't deliver</p>
+                        {% else %}
+                            <p class="text-white">Delivery URL: <a href="{{ delivery_url }}" class="text-white" target="_blank">DELIVERY URL</a></p>
+                        {% endif %}
+                        <p class="text-white">Address: {{ address }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

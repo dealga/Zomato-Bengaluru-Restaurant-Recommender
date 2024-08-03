@@ -1,0 +1,57 @@
+{% extends "zomatoapp/base.html" %}
+
+{% block title %}Recommend Restaurants{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="text-white" style="font-size: 50px;">Recommend Restaurants</h1>
+        <form method="POST" id="inputform">
+            {% csrf_token %}
+            {{ form1.as_p }}
+            <button type="submit" class="btn btn-primary">Recommend</button>
+        </form>
+    </div>
+
+    {% if input_restaurant %}
+    <div class="col-12" style="margin-top: 30px;">
+        <h2 class="text-white">Input Restaurant</h2>
+        <div class="card">
+            <div class="card-body">
+                <h3 class="text-white">{{ input_restaurant.Name }}</h3>
+                <p class="text-white">Google Maps: <a href="{{ input_restaurant.google_maps_link }}" class="text-white" target="_blank">GOOGLE MAPS LINK</a></p>
+                {% if input_restaurant.delivery_url == "restaurant doesn't deliver" %}
+                    <p class="text-white">Restaurant doesn't deliver</p>
+                {% else %}
+                    <p class="text-white">Delivery URL: <a href="{{ input_restaurant.delivery_url }}" class="text-white" target="_blank">DELIVERY URL</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if recommended_restaurants %}
+    <div class="col-12" style="margin-top: 30px;">
+        <h2 class="text-white">Recommended Restaurants</h2>
+        <div class="row">
+            {% for rest in recommended_restaurants %}
+            <div class="col-md-3" style="margin-bottom: 20px;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="text-white">{{ rest.Name }}</h4>
+                        <p class="text-white">Google Maps: <a href="{{ rest.google_maps_link }}" class="text-white" target="_blank">GOOGLE MAPS LINK</a></p>
+                        {% if rest.delivery_url == "restaurant doesn't deliver" %}
+                            <p class="text-white">Restaurant doesn't deliver</p>
+                        {% else %}
+                            <p class="text-white">Delivery URL: <a href="{{ rest.delivery_url }}" class="text-white" target="_blank">DELIVERY URL</a></p>
+                        {% endif %}
+                        <p class="text-white">Address: {{ rest.address }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
